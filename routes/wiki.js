@@ -2,17 +2,35 @@
 const express = require('express')
 const wikiRoutes = express()
 const router = express.Router()
-const  addPage  = require("../views/addPage")
+// const  addPage  = require("../views/addPage")
+const { Page } = require("../models");
+const { addPage } = require("../views");
+
 
 router.get('/', (req, res, next) => {
     res.send("get working")
     next()
 })
 
-router.post('/', (req, res, next) => {
-    res.send("post working")
-    next()
-})
+router.post('/', async (req, res, next) => {
+
+    // STUDENT ASSIGNMENT:
+    // add definitions for `title` and `content`
+    let title = req.body.title
+    const page = new Page({
+      title: title,
+      content: req.body.content,
+    //  slug: generateSlug(title)
+    });
+    console.log(Page)
+    // make sure we only redirect *after* our save is complete!
+    // note: `.save` returns a promise.
+    try {
+      await page.save();
+      res.redirect('/');
+    } catch (error) { next(error) }
+  });
+  
 
 router.get('/add', (req, res, next) => {
     
@@ -20,6 +38,10 @@ router.get('/add', (req, res, next) => {
     res.send(addPage())
     //next()
 })
+
+
+
+
 
 
 module.exports = router

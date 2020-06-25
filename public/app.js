@@ -29,7 +29,9 @@ app.use('/user', userRoutes)
 app.get('/', (req, res) => {
     let log = console.log("hello world")
     let page = layout("");
-    res.send(page);
+//    res.send('page');
+    res.redirect('/wiki')
+
 })
 
 const init = async () => {
